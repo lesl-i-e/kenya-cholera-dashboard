@@ -423,4 +423,4 @@ The data preparation process was intentionally rigorous and conservative, priori
 - Proper normalization of disease counts  
 - Documented unit transformations  
 
-This foundation is essential for producing defensible statistical inferences and trustworthy visual outputs.
+This foundation was essential for producing defensible statistical inferences and trustworthy visual outputs.
