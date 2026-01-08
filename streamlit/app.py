@@ -23,7 +23,7 @@ st.markdown("Simplified view of cholera risks in Kenya (2022-2024). Aggregated f
 # Load data once with caching
 @st.cache_resource
 def load_data():
-    df = pd.read_csv("streamlit/kenya_cholera_modeling_table_cleaned.csv")
+    df = pd.read_csv("kenya_cholera_modeling_table_cleaned.csv")
     df["expected_cases"] = df["cholera_incidence"] * df["population_density"] / 100_000
     # Monthly agg
     df_monthly = df.groupby(["GID_2", "location_clean", "year", "month"]).agg({
