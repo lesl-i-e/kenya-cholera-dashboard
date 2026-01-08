@@ -5,6 +5,10 @@ import folium
 from streamlit_folium import st_folium
 import plotly.express as px  # Light for bar/scatter
 import numpy as np
+from pathlib import Path
+
+# Base directory for relative data paths
+BASE_DIR = Path(__file__).parent
 
 st.set_page_config(layout="wide", page_title="Kenya Cholera Risk Dashboard", page_icon="🌡️")
 
@@ -23,7 +27,7 @@ st.markdown("Simplified view of cholera risks in Kenya (2022-2024). Aggregated f
 # Load data once with caching
 @st.cache_resource
 def load_data():
-    df = pd.read_csv("kenya_cholera_modeling_table_cleaned.csv")
+    df = pd.read_csv(BASE_DIR / "kenya_cholera_modeling_table_cleaned.csv")
     df["expected_cases"] = df["cholera_incidence"] * df["population_density"] / 100_000
     # Monthly agg
     df_monthly = df.groupby(["GID_2", "location_clean", "year", "month"]).agg({
@@ -39,7 +43,7 @@ def load_data():
 
 @st.cache_resource
 def load_geometry():
-    return gpd.read_file("gadm41_KEN_2 (1).geojson")  # Or use cholera geojson if preferred
+    return gpd.read_file(BASE_DIR / "gadm41_KEN_2 (1).geojson")  # Or use cholera geojson if preferred
 
 df_monthly, df_yearly = load_data()
 gdf = load_geometry()
@@ -108,7 +112,7 @@ districts = sorted(df_monthly["location_clean"].unique())  # Use monthly for ful
 district = st.selectbox("Select District (Nairobi suggestion: westlands)", districts, index=districts.index("westlands") if "westlands" in districts else 0)
 df_ts = df_monthly[df_monthly["location_clean"] == district] if view_mode != "Yearly (Default)" else df_yearly[df_yearly["location_clean"] == district]
 df_ts["date"] = pd.to_datetime(df_ts["year"].astype(str) + "-" + df_ts["month"].astype(str) + "-01") if "month" in df_ts.columns else pd.to_datetime(df_ts["year"].astype(str) + "-01-01")
-st.line_chart(df_ts.set_index("date")[["expected_cases", "cholera_incidence", "mean_temp_c", "total_precip_mm"]])
+st.line_chart(df_ts.set_index("date")[[ 'expected_cases', 'cholera_incidence', 'mean_temp_c', 'total_precip_mm']])
 
 # Viz 4 (Bonus): Scatter Plot - Incidence vs Precip
 st.header("Incidence vs Precipitation Correlation")
