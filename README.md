@@ -424,3 +424,123 @@ The data preparation process was intentionally rigorous and conservative, priori
 - Documented unit transformations  
 
 This foundation was essential for producing defensible statistical inferences and trustworthy visual outputs.
+
+
+# Chapter 4 — Exploratory Data Analysis and Modeling Strategy
+
+## 4.1 Purpose of Exploratory Analysis
+
+Exploratory Data Analysis (EDA) was conducted to understand the statistical properties of the cholera incidence data and to inform appropriate model selection. The objectives of this phase were to:
+
+- Examine the distribution of cholera incidence across districts and time
+- Identify potential seasonality and temporal trends
+- Assess relationships between cholera incidence and climate covariates
+- Evaluate model assumptions prior to formal estimation
+
+EDA was performed using the finalized modeling table described in Chapter 3.
+
+## 4.2 Distribution of Cholera Incidence
+
+### 4.2.1 Skewness and Overdispersion
+
+The cholera incidence variable exhibited:
+
+- Strong right skew
+- A high proportion of low or zero values
+- Occasional extreme outbreaks
+
+These characteristics are inconsistent with the assumptions of Gaussian regression and indicate count overdispersion, where the variance exceeds the mean.
+
+### 4.2.2 Zero Inflation Assessment
+
+While many district–month observations recorded zero cases, zeros were not structurally dominant. Most districts recorded at least one non-zero observation during the study period. This pattern suggests excess zeros driven by stochastic disease absence, rather than a structurally zero-generating process.
+
+As a result:
+
+- Zero-inflated models were considered
+- However, a standard Negative Binomial model was deemed sufficient as a baseline
+
+## 4.3 Temporal Patterns and Seasonality
+
+### 4.3.1 Monthly Seasonality
+
+Visual inspection of monthly incidence patterns revealed moderate seasonality, characterized by:
+
+- Increased incidence during wetter months
+- Reduced incidence during drier periods
+
+Seasonality was present but not uniform across districts, suggesting interaction between local environmental and socio-demographic conditions.
+
+### 4.3.2 Interannual Variation
+
+Cholera incidence varied between years, with certain years exhibiting more widespread outbreaks. However, no monotonic trend was observed across the study period, supporting the inclusion of year indicators rather than a continuous trend term.
+
+## 4.4 Climate Covariate Relationships
+
+### 4.4.1 Temperature
+
+Mean monthly temperature showed a consistent positive association with cholera incidence. Higher temperatures were visually associated with increased incidence, consistent with known biological and environmental mechanisms influencing *Vibrio cholerae* persistence.
+
+### 4.4.2 Precipitation
+
+Precipitation exhibited a non-linear relationship with incidence:
+
+- Low precipitation was associated with reduced incidence
+- Moderate to high precipitation corresponded to increased outbreak risk
+
+This supports hypotheses linking rainfall to water contamination and infrastructure stress.
+
+### 4.4.3 Relative Humidity
+
+Relative humidity showed a negative association with cholera incidence. While statistically significant, its biological interpretation is less direct and may reflect correlated climatic regimes rather than a causal mechanism.
+
+## 4.5 Model Selection Rationale
+
+### 4.5.1 Rejection of Linear Models
+
+Linear regression was deemed inappropriate due to:
+
+- Non-normality of residuals
+- Heteroskedasticity
+- Inability to handle count-based variance structures
+
+### 4.5.2 Poisson vs Negative Binomial
+
+A Poisson regression model assumes equality of mean and variance. Preliminary diagnostics revealed substantial overdispersion, violating this assumption.
+
+The Negative Binomial (NB) model was therefore selected as it:
+
+- Explicitly models overdispersion
+- Is well-established in epidemiological count modeling
+- Provides interpretable incidence rate ratios (IRRs)
+
+### 4.5.3 Baseline Model Specification
+
+The baseline NB model included:
+
+- Cholera incidence as the response variable
+- Climate covariates (temperature, precipitation, humidity)
+- Population normalization via incidence formulation
+- Temporal controls (year and month)
+
+Lagged climate terms were introduced in subsequent model refinements to capture delayed effects.
+
+## 4.6 Interpretation of Incidence Rate Ratios
+
+Model coefficients were interpreted as Incidence Rate Ratios (IRRs):
+
+- IRR > 1 indicates increased risk
+- IRR < 1 indicates reduced risk
+
+This framing allows for intuitive interpretation of climate effects on cholera transmission risk.
+
+## 4.7 Summary
+
+The EDA phase established that:
+
+- Cholera incidence is overdispersed and right-skewed
+- Moderate seasonality is present
+- Climate variables exhibit meaningful associations
+- Negative Binomial regression is an appropriate modeling framework
+
+These findings informed the modeling approach implemented in the subsequent chapter.
