@@ -544,3 +544,96 @@ The EDA phase established that:
 - Negative Binomial regression is an appropriate modeling framework
 
 These findings informed the modeling approach implemented in the subsequent chapter.
+
+
+# Chapter 5 — Modeling and Results
+
+## 5.1 Model Overview
+
+Given the overdispersed nature of cholera incidence data (see Chapter 4), a Negative Binomial (NB) regression model was selected as the primary analytical framework. This model accounts for variability exceeding the mean and provides interpretable incidence rate ratios (IRRs).
+
+The modeling workflow included:
+
+- Baseline NB model with contemporaneous climate covariates
+- Lagged NB model to capture delayed climate effects
+- Calculation of IRRs and corresponding p-values
+- Validation against model assumptions
+
+## 5.2 Baseline Negative Binomial Model
+
+### 5.2.1 Model Specification
+
+The baseline model included:
+
+- **Response variable**: Cholera incidence per 100,000 population
+- **Predictors**:
+  - Mean monthly temperature (°C)
+  - Total monthly precipitation (mm)
+  - Mean relative humidity (%)
+  - Temporal controls: Year and month indicators
+
+The model equation (simplified) is:  
+*log(μ_{it}) = β₀ + β₁ Temp_{it} + β₂ Precip_{it} + β₃ RH_{it} + γ Year + δ Month + log(Population_{it})*  
+Where *i* indexes districts and *t* indexes months.  
+\* Offset term for population normalization.
+
+### 5.2.2 Results — Baseline Model
+
+| Variable              | IRR   | p-value          |
+|-----------------------|-------|------------------|
+| Mean Temp (°C)        | 1.034 | 5.10 × 10⁻⁸⁶     |
+| Total Precip (mm)     | 0.850 | 5.09 × 10⁻³      |
+| Mean RH (%)           | 0.909 | 3.39 × 10⁻³¹     |
+
+**Interpretation**:
+
+- Mean temperature has the largest IRR, indicating a 3.4% increase in incidence per 1°C increase, holding other factors constant.
+- Total precipitation shows a protective effect in this baseline, though lagged analysis may alter interpretation.
+- Relative humidity is negatively associated with incidence.
+- All three predictors are statistically significant at conventional levels.
+
+## 5.3 Lagged Climate Variables
+
+To account for delayed effects of climate on cholera transmission, lagged variables were generated:
+
+- 1-month lag of temperature, precipitation, and relative humidity
+
+Incorporated sequentially in NB models. Lagged models were evaluated using parsimonious selection to retain only variables that improved model fit.
+
+### 5.3.1 Parsimonious Lagged Model Results
+
+| Variable              | IRR   | p-value          |
+|-----------------------|-------|------------------|
+| Lagged Temp (1 mo)    | 1.031 | < 1 × 10⁻⁷⁰      |
+| Lagged Precip (1 mo)  | 0.912 | 1.2 × 10⁻⁴       |
+| Lagged RH (1 mo)      | 0.914 | 4.1 × 10⁻³¹      |
+
+**Key points**:
+
+- Lagged temperature remains the strongest driver of cholera incidence.
+- Precipitation effects moderate after lag incorporation.
+- Relative humidity retains a protective association.
+
+This confirms that district-level climate conditions from the previous month significantly influence current cholera risk.
+
+## 5.4 Model Interpretation
+
+- **Temperature**: Each 1°C increase in lagged mean temperature increases incidence by approximately 3.1–3.4%, controlling for other variables.
+- **Precipitation**: Unexpected baseline protective effect is attenuated in the lagged model, aligning better with biological plausibility.
+- **Relative Humidity**: Protective effect is consistent, potentially reflecting interaction with other climatic factors.
+
+**Note**: IRRs should be interpreted as multiplicative effects on incidence per 100,000 population.
+
+## 5.5 Model Diagnostics
+
+- Residuals were examined for overdispersion; NB model adequately accounted for excess variance.
+- No influential observations were detected that distorted coefficient estimates.
+- Temporal autocorrelation was partially addressed through lagged covariates.
+
+Overall, the model demonstrates robustness and interpretability suitable for informing public health understanding and dashboard visualization.
+
+## 5.6 Summary
+
+- Baseline and lagged NB models consistently identify temperature as the primary driver of cholera incidence.
+- Lagged climate variables improve model realism and epidemiological interpretability.
+- Models are sufficiently robust to support visualization in an interactive dashboard while maintaining scientific rigor.
