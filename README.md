@@ -265,6 +265,7 @@ The final cleaned dataset is exported as:
 
 ```text
 kenya_cholera_modeling_table_cleaned.csv
+```
 
 # Chapter 3 — Data Preparation and Integration
 
