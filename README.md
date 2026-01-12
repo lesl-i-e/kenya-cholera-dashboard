@@ -66,7 +66,7 @@
 ---
 
 **Repository:** [https://github.com/lesl-i-e/Kenya_Cholera_Climate_Risk_Model](https://github.com/lesl-i-e/Kenya_Cholera_Climate_Risk_Model)  
-**Live Demo:** (Add link once deployed, e.g., Streamlit Cloud / Hugging Face Spaces)  
+**Live Demo:** [https://kenya-cholera-dashboard-esdjcsmd598dnmsudyv7ge.streamlit.app/](https://kenya-cholera-dashboard-esdjcsmd598dnmsudyv7ge.streamlit.app/)  
 **Author:** Leslie Gedion  
 **Last Updated:** January 2026
 
