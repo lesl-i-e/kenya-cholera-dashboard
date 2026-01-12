@@ -637,3 +637,159 @@ Overall, the model demonstrates robustness and interpretability suitable for inf
 - Baseline and lagged NB models consistently identify temperature as the primary driver of cholera incidence.
 - Lagged climate variables improve model realism and epidemiological interpretability.
 - Models are sufficiently robust to support visualization in an interactive dashboard while maintaining scientific rigor.
+
+
+# Kenya Cholera Climate Risk Dashboard
+
+**Chapter 6 — Interactive Visualization and Deployment**
+
+## 6.1 Purpose of the Interactive Dashboard
+
+To complement the statistical modeling results, an interactive web-based dashboard was developed using **Streamlit**. The dashboard serves three primary objectives:
+
+1. **Spatial exploration** of cholera risk at district (Admin-2) level  
+2. **Temporal exploration** of cholera incidence and associated climate trends  
+3. **Model-informed interpretation** rather than raw prediction display  
+
+The dashboard is designed to support **exploratory public health analysis**, not clinical forecasting or real-time outbreak prediction.
+
+## 6.2 Dashboard Architecture
+
+### 6.2.1 Technology Stack
+
+| Component              | Tool/Library                          |
+|------------------------|---------------------------------------|
+| Frontend & App Logic   | Streamlit                             |
+| Data Handling          | Pandas, GeoPandas                     |
+| Mapping                | Folium + streamlit-folium             |
+| Interactive Charts     | Plotly Express (bar & scatter), Streamlit native line chart |
+| Geometry               | GADM Kenya Admin-2 GeoJSON            |
+| Modeling Outputs       | Precomputed negative binomial results (incidence, expected cases) |
+
+All computationally intensive modeling steps (negative binomial regression, climate imputation) were performed offline.  
+The Streamlit application consumes only **preprocessed and aggregated datasets**, ensuring fast, stable, and responsive interaction even on standard laptops.
+
+## 6.3 Data Preparation for Visualization
+
+### 6.3.1 Spatial Data
+
+- Administrative boundaries: **GADM41 Kenya Admin-2** (constituency/district level)
+- Geometry stored as a cleaned GeoJSON file (`gadm41_KEN_2 (1).geojson`)
+- One record per district, preserving **full national coverage** (≈290 districts)
+- District-level geometry merged with the modeling table using the unique **`GID_2`** identifier
+- Districts without cholera records are explicitly retained and displayed with **zero incidence** values to avoid spatial bias
+
+### 6.3.2 Temporal Aggregation Strategy
+
+For efficient and interpretable visualization:
+
+- **Yearly view (default)**: Incidence averaged across months, expected cases summed annually  
+- **Monthly view (optional)**: Detailed month-by-month values for specific year/month selection  
+- Aggregation uses **mean incidence** (avoids over-representing districts with more frequent reporting)  
+- This decision is documented in the application to prevent misinterpretation of absolute values
+
+## 6.4 Dashboard Components
+
+### 6.4.1 Choropleth Map (Primary Visualization)
+
+The core element is a district-level choropleth map displaying cholera risk.
+
+**Key features:**
+
+- Toggle between **Yearly** (default, faster) and **Monthly** views  
+- Two metrics:  
+  - **Total Expected Cases** (summed for yearly, monthly count)  
+  - **Average Incidence (per 100,000 population)**  
+- Color scale: Yellow-Orange-Red (YlOrRd) — normalized for interpretability  
+- Hover tooltips showing:  
+  - District name  
+  - Selected metric value  
+  - Climate covariates (temperature, precipitation, humidity) — shown only in monthly view  
+- Zero-incidence districts displayed in light grey  
+- Centered on Kenya with zoom level optimized for national overview
+
+**Suggested screenshot placement:**  
+Full-screen choropleth map showing yearly average incidence across Kenya districts
+
+### 6.4.2 Additional Visualizations
+
+1. **Top 10 High-Risk Districts** — Bar chart (Plotly Express) showing the highest incidence or cases districts for the selected period  
+2. **Time Series Trends** — Interactive line chart for any selected district, showing:  
+   - Expected cases  
+   - Incidence  
+   - Mean temperature (°C)  
+   - Total precipitation (mm)  
+   (Uses Streamlit's native charting for lightweight performance)  
+3. **Incidence vs Precipitation Scatter** — Exploratory scatter plot (Plotly) showing relationship between monthly/annual precipitation and cholera incidence (bubble size = expected cases, color = temperature)
+
+### 6.4.3 User Controls
+
+Intuitive sidebar controls include:
+
+- View Mode: **Yearly (default)** or **Monthly**  
+- Year selection (and month when Monthly is chosen)  
+- Metric selection (Expected Cases or Incidence per 100k)  
+- District dropdown for time series and scatter exploration
+
+These controls allow seamless exploration without exposing the underlying model internals.
+
+## 6.5 Handling of Scale and Interpretation
+
+Cholera incidence values are presented with careful contextualization:
+
+- Incidence is expressed **per 100,000 population**  
+- Visual scaling is applied only for readability (e.g., color normalization)  
+- **No absolute case forecasts** are presented — only modeled patterns  
+- A clear disclaimer is included in the application:
+
+> “Displayed values represent modeled incidence patterns and climate associations, not real-time outbreak predictions or clinical forecasts.”
+
+This prevents potential misuse of the dashboard outputs.
+
+## 6.6 Deployment Strategy
+
+### 6.6.1 Local Deployment
+
+The application can be launched locally with one command:
+
+```bash
+streamlit run app.py
+```
+
+All required data files (CSV, GeoJSON) are stored relative to the application directory for maximum portability.
+
+## 6.6.2 Version Control and Reproducibility
+
+- Source code, processed data, and documentation are tracked using Git
+
+The repository includes:
+
+- Cleaned modeling table (`kenya_cholera_modeling_table_cleaned.csv`)
+- Streamlit application script (`app.py`)
+- Administrative boundaries GeoJSON
+- Project documentation and README
+
+Large raw raster files (>100 MB) were excluded from version control to maintain fast cloning and a clean repository size.
+
+Processed population density values remain available in the CSV for reproducibility.
+
+## 6.7 Limitations of the Dashboard
+
+- The dashboard does not perform live model fitting (all results are precomputed)
+- Results are constrained by the quality, completeness, and reporting frequency of historical cholera data
+- Spatial resolution is limited to Admin-2 districts (constituencies)
+- Climate variables are climatological averages (imputed where missing) and do not capture extreme events
+
+These limitations are explicitly acknowledged to maintain analytical integrity and scientific transparency.
+
+## 6.8 Summary
+
+The Streamlit dashboard successfully translates complex spatio-temporal modeling results into an accessible, interactive, and performant format while preserving scientific rigor.
+
+It enables public health analysts, researchers, and decision-makers to:
+
+- Explore district-level cholera risk patterns across Kenya
+- Investigate temporal trends and climate associations
+- Gain informed insights into potential climate–cholera relationships
+
+By prioritizing precomputed results, intuitive controls, and careful contextualization, the dashboard serves as a valuable exploratory tool for understanding cholera dynamics in Kenya.
