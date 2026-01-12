@@ -793,3 +793,107 @@ It enables public health analysts, researchers, and decision-makers to:
 - Gain informed insights into potential climate–cholera relationships
 
 By prioritizing precomputed results, intuitive controls, and careful contextualization, the dashboard serves as a valuable exploratory tool for understanding cholera dynamics in Kenya.
+
+
+# Chapter 7 — Discussion, Limitations, and Future Work
+
+## 7.1 Discussion of Key Findings
+
+This study demonstrates a statistically significant relationship between climatic variability and cholera incidence at the district (Admin-2) level in Kenya.
+
+**Key findings include:**
+
+- Temperature emerged as the strongest and most consistent predictor of cholera incidence, both contemporaneously and with a one-month lag.
+- Lagged climate effects improved epidemiological interpretability, reinforcing the importance of delayed environmental influences on disease transmission.
+- District-level modeling captured meaningful spatial heterogeneity that would be lost at coarser administrative levels.
+
+The integration of climate, population, and health data provides a coherent framework for understanding spatial and temporal cholera risk patterns.
+
+## 7.2 Methodological Strengths
+
+Several methodological choices strengthen the credibility of this work:
+
+- Use of a Negative Binomial regression model to address overdispersion in incidence data.
+- Explicit incidence standardization per population, avoiding misleading comparisons across districts.
+- Retention of all districts, including those with zero reported cases, preventing selection bias.
+- Separation of data construction, EDA, modeling, and visualization into distinct analytical stages.
+
+These decisions align with best practices in spatial epidemiology and applied data science.
+
+## 7.3 Limitations
+
+Despite its strengths, the study has several limitations that must be acknowledged.
+
+### 7.3.1 Cholera Data Quality
+
+- Cholera surveillance data may suffer from underreporting, reporting delays, or misclassification.
+- Reporting practices may vary by district, potentially introducing spatial bias.
+- The dataset spans only 2022–2024, limiting long-term trend analysis.
+
+These issues are common in infectious disease datasets and were mitigated where possible but cannot be fully eliminated.
+
+### 7.3.2 Climate Data Resolution
+
+- ERA5 climate data represent gridded estimates, not point measurements.
+- Zonal aggregation assumes uniform climate exposure within districts, which may oversimplify local variability.
+
+### 7.3.3 Modeling Constraints
+
+The model does not explicitly account for:
+
+- Water and sanitation infrastructure
+- Human mobility
+- Health system capacity
+
+Spatial autocorrelation was not fully modeled and may influence residual dependence.
+
+As a result, the model should be interpreted as **associational**, not causal.
+
+### 7.3.4 Dashboard Performance and Technical Limitations
+
+- The Streamlit application relies on Folium-based maps, which can be slow to load, particularly on low-bandwidth connections.
+- Large GeoJSON files increase rendering time and may reduce responsiveness.
+- Visualization scaling was applied for interpretability, which requires careful documentation to avoid misinterpretation.
+
+These limitations are technical rather than analytical and do not affect the validity of the underlying results.
+
+## 7.4 Future Work
+
+Several extensions could enhance this work:
+
+1. **Incorporation of additional covariates**
+   - Water access and sanitation indicators
+   - Flood occurrence data
+   - Mobility or settlement density measures
+
+2. **Advanced modeling approaches**
+   - Spatial autoregressive or Bayesian hierarchical models
+   - Generalized Additive Models (GAMs) for nonlinear climate effects
+
+3. **Improved visualization performance**
+   - Vector tile maps or Mapbox integration
+   - Server-side caching of spatial layers
+
+4. **Temporal expansion**
+   - Inclusion of additional years as data become available
+   - Seasonal forecasting experiments
+
+## 7.5 Portfolio and Practical Relevance
+
+This project demonstrates:
+
+- End-to-end data science workflow execution
+- Integration of geospatial, climatic, and epidemiological data
+- Appropriate statistical modeling choices
+- Deployment of results in an interactive application
+
+The work is suitable for inclusion in a data science portfolio, particularly for roles involving:
+
+- Applied machine learning
+- Geospatial analytics
+- Public health data analysis
+- Climate impact modeling
+
+## 7.6 Conclusion
+
+This study provides a robust, reproducible, and interpretable framework for analyzing cholera risk in Kenya using climate and population data. While limitations exist, the analytical choices and results offer meaningful insights and a strong foundation for future work.
