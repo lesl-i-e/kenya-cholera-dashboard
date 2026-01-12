@@ -1,80 +1,74 @@
+# Kenya Cholera Climate Risk Model  
+## Interactive Dashboard & Spatio-Temporal Analysis
+
 # Table of Contents
 
-- [Chapter 0 — Executive Summary](#chapter-0--executive-summary)
-- [Chapter 1 — Introduction](#chapter-1--introduction)
-  - [1.1 Problem Statement](#11-problem-statement)
-  - [1.2 Research Objectives](#12-research-objectives)
-  - [1.3 Public Health Significance](#13-public-health-significance)
-- [Chapter 2 — Literature Review](#chapter-2--literature-review)
-  - [2.1 Cholera Epidemiology in Kenya](#21-cholera-epidemiology-in-kenya)
-  - [2.2 Climate-Cholera Relationships](#22-climate-cholera-relationships)
-  - [2.3 Methodological Gaps](#23-methodological-gaps)
-- [Chapter 3 — Data Acquisition and Preprocessing](#chapter-3--data-acquisition-and-preprocessing)
-  - [3.1 Cholera Surveillance Data](#31-cholera-surveillance-data)
-  - [3.2 Climate Data (ERA5)](#32-climate-data-era5)
-  - [3.3 Population and Administrative Boundaries](#33-population-and-administrative-boundaries)
-  - [3.4 Data Integration Pipeline](#34-data-integration-pipeline)
-- [Chapter 4 — Exploratory Data Analysis and Modeling Strategy](#chapter-4--exploratory-data-analysis-and-modeling-strategy)
-  - [4.1 Purpose of Exploratory Analysis](#41-purpose-of-exploratory-analysis)
-  - [4.2 Distribution of Cholera Incidence](#42-distribution-of-cholera-incidence)
-    - [4.2.1 Skewness and Overdispersion](#421-skewness-and-overdispersion)
-    - [4.2.2 Zero Inflation Assessment](#422-zero-inflation-assessment)
-  - [4.3 Temporal Patterns and Seasonality](#43-temporal-patterns-and-seasonality)
-    - [4.3.1 Monthly Seasonality](#431-monthly-seasonality)
-    - [4.3.2 Interannual Variation](#432-interannual-variation)
-  - [4.4 Climate Covariate Relationships](#44-climate-covariate-relationships)
-    - [4.4.1 Temperature](#441-temperature)
-    - [4.4.2 Precipitation](#442-precipitation)
-    - [4.4.3 Relative Humidity](#443-relative-humidity)
-  - [4.5 Model Selection Rationale](#45-model-selection-rationale)
-    - [4.5.1 Rejection of Linear Models](#451-rejection-of-linear-models)
-    - [4.5.2 Poisson vs Negative Binomial](#452-poisson-vs-negative-binomial)
-    - [4.5.3 Baseline Model Specification](#453-baseline-model-specification)
-  - [4.6 Interpretation of Incidence Rate Ratios](#46-interpretation-of-incidence-rate-ratios)
-  - [4.7 Summary](#47-summary)
+1. **[Chapter 0 — Introduction & Project Overview](#chapter-0--introduction--project-overview)**  
+   - Background & Motivation  
+   - Research Questions & Objectives  
+   - Scope & Study Area  
+   - Significance & Expected Contributions  
 
-- [Chapter 5 — Modeling and Results](#chapter-5--modeling-and-results)
-  - [5.1 Model Overview](#51-model-overview)
-  - [5.2 Baseline Negative Binomial Model](#52-baseline-negative-binomial-model)
-    - [5.2.1 Model Specification](#521-model-specification)
-    - [5.2.2 Results — Baseline Model](#522-results--baseline-model)
-  - [5.3 Lagged Climate Variables](#53-lagged-climate-variables)
-    - [5.3.1 Parsimonious Lagged Model Results](#531-parsimonious-lagged-model-results)
-  - [5.4 Model Interpretation](#54-model-interpretation)
-  - [5.5 Model Diagnostics](#55-model-diagnostics)
-  - [5.6 Summary](#56-summary)
+2. **[Chapter 1 — Literature Review](#chapter-1--literature-review)**  
+   - Cholera Epidemiology in Kenya & East Africa  
+   - Climate–Cholera Relationships  
+   - Previous Modeling Approaches  
+   - Gaps in Existing Research  
 
-- [Chapter 6 — Interactive Visualization and Deployment](#chapter-6--interactive-visualization-and-deployment)
-  - [6.1 Purpose of the Interactive Dashboard](#61-purpose-of-the-interactive-dashboard)
-  - [6.2 Dashboard Architecture](#62-dashboard-architecture)
-  - [6.3 Key Visualization Components](#63-key-visualization-components)
-  - [6.4 Streamlit Implementation](#64-streamlit-implementation)
-  - [6.5 Performance Optimization](#65-performance-optimization)
-  - [6.6 Deployment and Reproducibility](#66-deployment-and-reproducibility)
-    - [6.6.1 File Structure](#661-file-structure)
-    - [6.6.2 Version Control and Reproducibility](#662-version-control-and-reproducibility)
-  - [6.7 Limitations of the Dashboard](#67-limitations-of-the-dashboard)
-  - [6.8 Summary](#68-summary)
+3. **[Chapter 2 — Data Sources & Preprocessing](#chapter-2--data-sources--preprocessing)**  
+   - Cholera Incidence Data  
+   - Climate Data (ERA5)  
+   - Population & Administrative Boundaries  
+   - Data Cleaning & Harmonization  
+   - Final Modeling Table Construction  
 
-- [Chapter 7 — Discussion, Limitations, and Future Work](#chapter-7--discussion-limitations-and-future-work)
-  - [7.1 Discussion of Key Findings](#71-discussion-of-key-findings)
-  - [7.2 Methodological Strengths](#72-methodological-strengths)
-  - [7.3 Limitations](#73-limitations)
-    - [7.3.1 Cholera Data Quality](#731-cholera-data-quality)
-    - [7.3.2 Climate Data Resolution](#732-climate-data-resolution)
-    - [7.3.3 Modeling Constraints](#733-modeling-constraints)
-    - [7.3.4 Dashboard Performance](#734-dashboard-performance-and-technical-limitations)
-  - [7.4 Future Work](#74-future-work)
-  - [7.5 Portfolio and Practical Relevance](#75-portfolio-and-practical-relevance)
-  - [7.6 Conclusion](#76-conclusion)
+4. **[Chapter 3 — Exploratory Data Analysis and Modeling Strategy](#chapter-3--exploratory-data-analysis-and-modeling-strategy)**  
+   - Purpose of Exploratory Analysis  
+   - Distribution of Cholera Incidence  
+   - Temporal Patterns & Seasonality  
+   - Climate Covariate Relationships  
+   - Model Selection Rationale  
+   - Baseline Model Specification  
 
-- [Appendices](#appendices)
-  - [Appendix A — Code Repository](#appendix-a--code-repository)
-  - [Appendix B — Data Dictionary](#appendix-b--data-dictionary)
-  - [Appendix C — Model Diagnostics](#appendix-c--model-diagnostics)
-  - [Appendix D — Dashboard Screenshots](#appendix-d--dashboard-screenshots)
+5. **[Chapter 4 — Modeling and Results](#chapter-4--modeling-and-results)**  
+   - Model Overview  
+   - Baseline Negative Binomial Model  
+   - Lagged Climate Variables  
+   - Model Interpretation (IRRs)  
+   - Model Diagnostics  
+   - Summary of Findings  
 
-- [References](#references)
+6. **[Chapter 5 — Interactive Visualization and Deployment](#chapter-5--interactive-visualization-and-deployment)**  
+   - Purpose of the Interactive Dashboard  
+   - Dashboard Architecture & Technologies (Streamlit, Folium, etc.)  
+   - Key Features & Layout  
+   - Data Preparation for Visualization  
+   - Implementation Details  
+   - Version Control & Reproducibility  
+   - Limitations of the Dashboard  
+   - Summary  
+
+7. **[Chapter 6 — Discussion, Limitations, and Future Work](#chapter-6--discussion-limitations-and-future-work)**  
+   - Discussion of Key Findings  
+   - Methodological Strengths  
+   - Limitations (Data Quality, Modeling, Dashboard)  
+   - Future Work & Possible Extensions  
+   - Portfolio & Practical Relevance  
+   - Conclusion  
+
+8. **[References](#references)**  
+9. **[Appendices](#appendices)**  
+   - A. Full Model Output Tables  
+   - B. Additional Visualizations  
+   - C. Code Snippets & Reproducibility Instructions  
+   - D. Glossary of Terms  
+
+---
+
+**Repository:** [https://github.com/lesl-i-e/Kenya_Cholera_Climate_Risk_Model](https://github.com/lesl-i-e/Kenya_Cholera_Climate_Risk_Model)  
+**Live Demo:** (Add link once deployed, e.g., Streamlit Cloud / Hugging Face Spaces)  
+**Author:** Leslie Gedion  
+**Last Updated:** January 2026
 
 
 # Project Overview (Executive Summary)
